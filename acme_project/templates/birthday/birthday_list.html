@@ -3,19 +3,21 @@
 
 {% block content %}
   {% for birthday in birthdays %}
-    <div>
-      <div>
-        {{ birthday.first_name }} {{ birthday.last_name }} - {{ birthday.birthday }}
+    <div class="card col-4">
+      <div class="card-header">
+        <h5>{{ birthday.first_name }} {{ birthday.last_name }} - {{ birthday.birthday }}</h5>
       </div>
       <!-- Ссылку тоже обернём в div; адрес ссылки
         указываем через namespace:name -->
       <div>
         <a href="{% url 'birthday:edit' birthday.id %}">Изменить запись</a>
+        </div>
+      <div>
         <a href="{% url 'birthday:delete' birthday.id %}">Удалить запись</a>
       </div>
-      {% if not forloop.last %}
+      {% comment %} {% if not forloop.last %}
         <hr>
-      {% endif %}
+      {% endif %} {% endcomment %}
     </div>
   {% endfor %}
 {% endblock %}
