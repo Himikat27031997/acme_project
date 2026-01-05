@@ -50,6 +50,9 @@ TEMPLATES = [
     },
 ]
 
+# DATE_INPUT_FORMATS = ['%Y-%m-%d', '%d.%m.%Y', '%d/%m/%Y', '%m/%d/%Y']
+# DATE_FORMAT = '%Y-%m-%d'
+
 WSGI_APPLICATION = 'acme_project.wsgi.application'
 
 DATABASES = {
