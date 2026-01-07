@@ -4,10 +4,19 @@ from django.views.generic import (
     ListView, CreateView, UpdateView, DeleteView, DetailView
 )
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .forms import BirthdayForm
 from .models import Birthday
 from .utils import calculate_birthday_countdown
+
+
+@login_required
+def simple_view(request):
+    resp = 'Пошел нахуй БОМЖара'
+    return HttpResponse(resp)
 
 
 class BirthdayMixin:
@@ -19,19 +28,25 @@ class BirthdayListView(BirthdayMixin, ListView):
     paginate_by = 2
 
 
-class BirthdayCreateView(BirthdayMixin, CreateView):
+class BirthdayCreateView(LoginRequiredMixin, BirthdayMixin, CreateView):
+    form_class = BirthdayForm
+
+    def form_valid(self, form_class):
+        # Присвоить полю author объект пользователя из запроса.
+        form_class.instance.author = self.request.user
+        # Продолжить валидацию, описанную в форме.
+        return super().form_valid(form_class)
+
+
+class BirthdayUpdateView(LoginRequiredMixin, BirthdayMixin, UpdateView):
     form_class = BirthdayForm
 
 
-class BirthdayUpdateView(BirthdayMixin, UpdateView):
-    form_class = BirthdayForm
-
-
-class BirthdayDeleteView(BirthdayMixin, DeleteView):
+class BirthdayDeleteView(LoginRequiredMixin, BirthdayMixin, DeleteView):
     success_url = reverse_lazy('birthday:list')
 
 
-class BirthdayDetailView(BirthdayMixin, DetailView):
+class BirthdayDetailView(LoginRequiredMixin, BirthdayMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

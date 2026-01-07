@@ -3,9 +3,9 @@ from .models import CustomUser
 
 
 class CustomUserCreationForm(UserCreationForm):
-    class Meta:  # Наследуемся от Meta класса родителя
+    class Meta(UserCreationForm.Meta):  # Наследуемся от Meta класса родителя
         model = CustomUser
-        fields = UserCreationForm.Meta.fields + ('email', 'birthday')  # Добавляем новые поля
+        fields = UserCreationForm.Meta.fields + ('email', 'bio')  # Добавляем новые поля
 
 
 class CustomUserChangeForm(UserChangeForm):
