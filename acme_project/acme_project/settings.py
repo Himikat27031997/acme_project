@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -7,6 +8,18 @@ SECRET_KEY = 'django-insecure-m&$lzdzkutvrbr5vt=jpm)7#g7cken_tk%($ty+w902n7wb#=e
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+LOGIN_REDIRECT_URL = 'pages:homepage'
+
+# LOGOUT_REDIRECT_URL = '/'
+
+LOGIN_URL = 'login'
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+# Указываем директорию, в которую будут сохраняться файлы писем:
+EMAIL_FILE_PATH = BASE_DIR / 'sent_emails'
+
+AUTH_USER_MODEL = 'users.CustomUser'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -19,6 +32,7 @@ INSTALLED_APPS = [
     'pages.apps.PagesConfig',
     'django_bootstrap5',
     'django_cleanup.apps.CleanupConfig',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -92,4 +106,6 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_ROOT = BASE_DIR / 'media'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
